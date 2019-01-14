@@ -1,15 +1,22 @@
-require("dotenv").config();
-const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+require('dotenv').config();
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const models = require('./models');
 const PORT = process.env.PORT;
-console.log(PORT);
 
 let app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
+const migrateDB = () => {
+  models.sequelize.sync({ force: true }).then(() => {
+    console.log('Database migrations successful');
+  });
+};
+
 app.listen(PORT, () => {
+  migrateDB();
   console.log(`server listening on port ${PORT}`);
 });
