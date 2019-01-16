@@ -34,15 +34,11 @@ module.exports = (Sequelize, DataTypes) => {
   }
 
   User.beforeCreate((user, options) => {
-      return passwordUtil.hashPassword(user.password).then(hashedPw => {
-          user.password = hashedPw;
-      }).catch(err => {
-          console.log(err);
-      })
-  });
-
-  User.afterCreate((user, options) => {
-      return emailUtils.sendConfirmationEmail(user);
+    return passwordUtil.hashPassword(user.password).then(hashedPw => {
+      user.password = hashedPw;
+    }).catch(err => {
+      console.log(err);
+    })
   });
 
   return User;

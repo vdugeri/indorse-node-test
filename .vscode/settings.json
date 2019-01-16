@@ -1,6 +1,7 @@
 {
-  "jshint.enable": false,
-  "eslint.enable": false,
-  "editor.tabSize": 2,
-  "editor.formatOnSave": true
+	"jshint.enable": false,
+	"eslint.enable": false,
+	"editor.tabSize": 2,
+	"editor.formatOnSave": true,
+	"editor.detectIndentation": false
 }

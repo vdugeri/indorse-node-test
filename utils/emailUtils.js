@@ -6,11 +6,35 @@ const password = process.env.MAIL_PASSWORD;
 const protocol = process.env.MAIL_PROTOCOL;
 const from = process.env.MAIL_FROM;
 
+module.exports = (() => {
+  const sendConfirmationEmail = async user => {
+    let account = await NodeMailer.createTestAccount();
 
-const sendConfirmationEmail = user => {
-    console.log('confirmation email sent');
-}
+    let transporter = NodeMailer.createTransport({
+      host: 'smtp.ethereal.email',
+      port: 587,
+      secure: false,
+      auth: {
+        user: account.user,
+        pass: account.pass
+      }
+    });
 
-module.exports = {
+    let mailOptions = {
+      from,
+      to: user.email_address,
+      subject: 'Authenticator Singup Confirmation',
+      text: `Click ${link} to confirm registraion`,
+    };
+
+    let info = await transporter.sendMail(mailOptions);
+
+    return {
+      id: info.messageId,
+      url: NodeMailer.getTestMessageUrl(info)
+    }
+  }
+  return {
     sendConfirmationEmail
-}
+  }
+})();
