@@ -8,7 +8,7 @@ module.exports = (app) => {
   app.post(`/api/${VERSION}/auth/login`, controllers.AuthController.login);
   app.post(`/api/${VERSION}/users`, Validator.validate, controllers.UserController.create);
   app.get(
-    '/api/{VERSION}/emails/verify',
+    `/api/${VERSION}/emails/verify`,
     controllers.UserController.verifyEmail,
   );
 };

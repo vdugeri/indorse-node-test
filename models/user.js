@@ -1,5 +1,4 @@
 const passwordUtil = require('../utils/passwordUtil');
-const emailUtils = require('../utils/emailUtils');
 
 
 module.exports = (Sequelize, DataTypes) => {
@@ -11,10 +10,12 @@ module.exports = (Sequelize, DataTypes) => {
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
       },
-      first_name: { type: DataTypes.STRING },
-      last_name: { type: DataTypes.STRING },
-      email_address: { type: DataTypes.STRING, required: true, unique: true },
-      password: { type: DataTypes.STRING },
+      first_name: { type: DataTypes.STRING, allowNull: false },
+      last_name: { type: DataTypes.STRING, allowNull: false },
+      email_address: { type: DataTypes.STRING, required: true, unique: true, allowNull: false },
+      password: { type: DataTypes.STRING, allowNull: false },
+      remember_token: { type: DataTypes.STRING, allowNull: true }
+
     },
     {
       underscored: true,

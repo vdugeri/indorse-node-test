@@ -1,13 +1,12 @@
-const host = process.env.MAIL_HOST;
-const port = process.env.MAIL_PORT;
+const HOST = process.env.HOST;
+const PORT = process.env.PORT;
 const username = process.env.MAIL_USER;
 const NodeMailer = require('nodemailer');
-const password = process.env.MAIL_PASSWORD;
-const protocol = process.env.MAIL_PROTOCOL;
 const from = process.env.MAIL_FROM;
+const API_VERSION = process.env.API_VERSION;
 
 module.exports = (() => {
-  const sendConfirmationEmail = async user => {
+  const sendConfirmationEmail = async recipient => {
     let account = await NodeMailer.createTestAccount();
 
     let transporter = NodeMailer.createTransport({
@@ -20,9 +19,11 @@ module.exports = (() => {
       }
     });
 
+    const link = `http://${HOST}:${PORT}/api/${API_VERSION}/emails/verify?token=${recipient.remember_token}`
+
     let mailOptions = {
       from,
-      to: user.email_address,
+      to: recipient.email_address,
       subject: 'Authenticator Singup Confirmation',
       text: `Click ${link} to confirm registraion`,
     };
