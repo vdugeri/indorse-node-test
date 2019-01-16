@@ -1,6 +1,6 @@
-const bcrypt = require('bcrypt');
+const passwordUtil = require('../utils/passwordUtil');
+const emailUtils = require('../utils/emailUtils');
 
-const ROUNDS = 10;
 
 module.exports = (Sequelize, DataTypes) => {
   const User = Sequelize.define(
@@ -19,40 +19,30 @@ module.exports = (Sequelize, DataTypes) => {
     {
       underscored: true,
       tableName: 'users',
-      instanceMethods: {
-        toJson() {
-          const value = this.get();
-          delete value.password;
-
-          return value;
-        },
-        matchPasswords(candidatePassword, hash) {
-          return new Promise((resolve, reject) => {
-            bcrypt.compare(candidatePassword, hash, (err, matched) => {
-              if (!err) {
-                return resolve(matched);
-              }
-
-              return reject(err);
-            });
-          });
-        },
-      },
     },
   );
 
-  User.beforeCreate((user, options, next) => {
-    bcrypt.genSalt(ROUNDS, (err, salt) => {
-      if (!err) {
-        bcrypt.hash(user.password, salt, (error, hash) => {
-          if (err) {
-            return next(error);
-          }
-          user.password = hash;
-          return next();
-        });
-      }
-    });
+  User.prototype.toJson = () => {
+    const value = this.get();
+    delete value.password;
+
+    return value;
+  }
+
+  User.prototype.matchPasswords = (candidatePassword, hash) => {
+    return passwordUtils.matchPassword(candidatePassword, hash);
+  }
+
+  User.beforeCreate((user, options) => {
+      return passwordUtil.hashPassword(user.password).then(hashedPw => {
+          user.password = hashedPw;
+      }).catch(err => {
+          console.log(err);
+      })
+  });
+
+  User.afterCreate((user, options) => {
+      return emailUtils.sendConfirmationEmail(user);
   });
 
   return User;
