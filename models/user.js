@@ -25,13 +25,10 @@ module.exports = (Sequelize, DataTypes) => {
 
   User.prototype.toJson = () => {
     const value = this.get();
+    console.log('value', value);
     delete value.password;
 
     return value;
-  }
-
-  User.prototype.matchPasswords = (candidatePassword, hash) => {
-    return passwordUtils.matchPassword(candidatePassword, hash);
   }
 
   User.beforeCreate((user, options) => {
