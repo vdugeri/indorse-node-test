@@ -21,7 +21,6 @@ module.exports = (() => {
     return new Promise((resolve, reject) => {
       models.User.findAll({ where: { remember_token: hash } })
         .then(user => {
-          console.log(user);
           if (Object.keys(user).length > 0) {
             return resolve();
           }

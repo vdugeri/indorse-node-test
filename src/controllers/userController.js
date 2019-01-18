@@ -20,7 +20,6 @@ module.exports = (() => {
 
 
     HashUtils.makeHash(user).then(hash => {
-      console.log(hash);
       user.remember_token = hash;
 
       models.User.create(user).then((newUser) => {
@@ -37,7 +36,6 @@ module.exports = (() => {
   };
 
   const verifyEmail = (req, res) => {
-    console.log(req.query.token);
     HashUtils.verifyHash(req.query.token).then(() => {
       return res.status(200).json({ info: 'VERIFICATION_SUCCESSFUL' })
     }).catch(() => {

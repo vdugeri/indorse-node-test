@@ -25,7 +25,6 @@ module.exports = (Sequelize, DataTypes) => {
 
   User.prototype.toJson = () => {
     const value = this.get();
-    console.log('value', value);
     delete value.password;
 
     return value;
@@ -35,7 +34,7 @@ module.exports = (Sequelize, DataTypes) => {
     return passwordUtil.hashPassword(user.password).then(hashedPw => {
       user.password = hashedPw;
     }).catch(err => {
-      console.log(err);
+      //
     })
   });
 
