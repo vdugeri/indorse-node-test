@@ -2,6 +2,7 @@
 
 module.exports = (() => {
   const isEmpty = object => Object.keys(object).length === 0;
+
   const validate = (req, res, next) => {
     const errors = {};
     if (!req.body.first_name) {
@@ -19,8 +20,6 @@ module.exports = (() => {
     if (!req.body.password) {
       errors.password = 'required';
     }
-
-    console.log(errors);
 
     if (!isEmpty(errors)) {
       return res.status(400).json(errors);
