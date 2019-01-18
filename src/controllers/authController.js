@@ -21,18 +21,33 @@ module.exports = (() => {
   const login = (req, res) => {
     const { email_address, password } = req.body;
     findUser(email_address).then(user => {
-      matchPassword(user.password, password).then(() => {
-        createToken(user).then(token => {
-          user = user.toJSON();
-          user.token = token;
-          return res.status(200).json(user);
-        })
-      }).catch(err => {
+      if (user) {
+        matchPassword(user.password, password).then(() => {
+          createToken(user).then(token => {
+            user = user.toJSON();
+            user.token = token;
+            return res.status(200).json(user);
+          }).catch(err => {
+            return res.status(500).json(err);
+          });
+        }).catch(err => {
+          return res.status(401).json({
+            status: 'error',
+            message: 'Invalid credentials',
+            err
+          });
+        });
+      } else {
         return res.status(401).json({
           status: 'error',
           message: 'Invalid credentials',
-          err
         });
+      }
+    }).catch(err => {
+      return res.status(401).json({
+        status: 'error',
+        message: 'Invalid credentials',
+        err
       });
     });
   };
