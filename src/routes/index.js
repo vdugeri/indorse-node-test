@@ -1,5 +1,5 @@
 const controllers = require('../controllers');
-const Validator = requiore('../middleware/validator.js');
+const Validator = require('../middleware/validator.js');
 
 
 const VERSION = process.env.API_VERSION;

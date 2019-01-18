@@ -14,6 +14,8 @@ const paths = {
 
 const test = () => {
   process.env.NODE_ENV = 'test';
+  process.env.TOKEN_SECRET = 'wrwrwadafarwtwwd45343';
+
   return src(paths.test, { read: false })
     .pipe(instrument({
       pattern: paths.serverFiles,
