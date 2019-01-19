@@ -13,6 +13,13 @@ app.use(cors());
 
 routes(app);
 
+const DBMigrate = () => {
+  models.sequelize.sync().then(() => {
+    console.log('database created');
+  });
+}
+
 app.listen(PORT, () => {
+  DBMigrate();
   console.log(`server listening on port ${PORT}`);
 });

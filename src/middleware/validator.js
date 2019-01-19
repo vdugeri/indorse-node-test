@@ -4,7 +4,6 @@ module.exports = (() => {
   const isEmpty = object => Object.keys(object).length === 0;
 
   const validate = (req, res, next) => {
-    console.log(req.body);
     const errors = {};
     if (!req.body.first_name) {
       errors.firstname = 'required';
