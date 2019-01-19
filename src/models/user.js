@@ -14,7 +14,8 @@ module.exports = (Sequelize, DataTypes) => {
       last_name: { type: DataTypes.STRING, allowNull: false },
       email_address: { type: DataTypes.STRING, required: true, unique: true, allowNull: false },
       password: { type: DataTypes.STRING, allowNull: false },
-      remember_token: { type: DataTypes.STRING, allowNull: true }
+      remember_token: { type: DataTypes.STRING, allowNull: true },
+      verified: { type: DataTypes.BOOLEAN, defaultValue: false }
 
     },
     {
@@ -22,13 +23,6 @@ module.exports = (Sequelize, DataTypes) => {
       tableName: 'users',
     },
   );
-
-  User.prototype.toJson = () => {
-    const value = this.get();
-    delete value.password;
-
-    return value;
-  }
 
   User.beforeCreate((user, options) => {
     return passwordUtil.hashPassword(user.password).then(hashedPw => {

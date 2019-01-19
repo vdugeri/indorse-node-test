@@ -18,12 +18,17 @@ module.exports = (() => {
   }
 
   const verifyHash = hash => {
+    console.log(hash);
     return new Promise((resolve, reject) => {
-      models.User.findAll({ where: { remember_token: hash } })
+      models.User.findOne({ where: { remember_token: hash } })
         .then(user => {
-          if (Object.keys(user).length > 0) {
+          if (user) {
+            user.verified = true;
+            console.log(user);
+            user.save();
             return resolve();
           }
+          console.log('here');
           return reject();
         }).catch(err => {
           return reject();

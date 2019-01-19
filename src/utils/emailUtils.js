@@ -19,7 +19,7 @@ module.exports = (() => {
       }
     });
 
-    const link = `http://${HOST}:${PORT}/api/${API_VERSION}/emails/verify?token=${recipient.remember_token}`
+    const link = `http://${HOST}:${PORT}/api/${API_VERSION}/emails/verify?token=${encodeURIComponent(recipient.remember_token)}`
 
     let mailOptions = {
       from,

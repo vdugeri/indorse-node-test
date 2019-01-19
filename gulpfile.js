@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { src, series, dest } = require('gulp');
 const loadPlugins = require('gulp-load-plugins');
 const shell = require('gulp-shell');
@@ -12,10 +13,12 @@ const paths = {
   serverFiles: ['./src/**/*.js']
 };
 
-const test = () => {
+const setEnv = (done) => {
   process.env.NODE_ENV = 'test';
-  process.env.TOKEN_SECRET = 'wrwrwadafarwtwwd45343';
+  done();
+}
 
+const test = () => {
   return src(paths.test, { read: false })
     .pipe(instrument({
       pattern: paths.serverFiles,
@@ -44,6 +47,6 @@ const restart = (done) => {
   done();
 }
 
-exports.test = series(migrate, test);
+exports.test = series(setEnv, migrate, test);
 exports.default = restart;
 

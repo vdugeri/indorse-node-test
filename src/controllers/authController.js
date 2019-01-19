@@ -21,7 +21,7 @@ module.exports = (() => {
   const login = (req, res) => {
     const { email_address, password } = req.body;
     findUser(email_address).then(user => {
-      if (user) {
+      if (user && user.verified) {
         matchPassword(user.password, password).then(() => {
           createToken(user).then(token => {
             user = user.toJSON();

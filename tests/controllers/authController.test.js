@@ -11,7 +11,8 @@ describe('AuthController', () => {
     first_name: 'Joey',
     last_name: 'Dodley',
     email_address: 'joey.dodley@example.com',
-    password: 'password'
+    password: 'password',
+    verified: true
   };
   beforeEach(done => {
     res = httpMocks.createResponse({

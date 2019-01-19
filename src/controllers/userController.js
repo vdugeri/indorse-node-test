@@ -21,11 +21,10 @@ module.exports = (() => {
 
     HashUtils.makeHash(user).then(hash => {
       user.remember_token = hash;
-
       models.User.create(user).then((newUser) => {
         const info = emailUtils.sendConfirmationEmail(newUser);
         info.then(message => {
-          return res.status(201).json({ info: message.url })
+          return res.status(201).json({ info: 'follow this link to verify your email: ' + message.url })
         });
       }).catch((err) => {
         res.status(500).json(err);
